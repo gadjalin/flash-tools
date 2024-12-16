@@ -480,7 +480,7 @@ def calculate_shell_mass(r, dr, dens):
 
     return (4./3.) * np.pi * ((r + dr*0.5)**3 - (r - dr*0.5)**3) * dens
 
-def calculate_shock(time, shock_rad):
+def calculate_shock(time, shock_radius):
     """
     Calculates shock velocity.
 
@@ -503,9 +503,9 @@ def calculate_shock(time, shock_rad):
     offset = 0
     # The dat file usually contains duplicates of the same time.
     # Removes the duplicates for a smoother result.
-    for k, g in groupby(max_shock_rads):
+    for k, g in groupby(shock_radius):
         offset += len(list(g))
-        shock_times_smooth.append(times[offset - 1])
+        shock_times_smooth.append(time[offset - 1])
         shock_rad_smooth.append(k)
 
     #t_bounce = time[np.min(np.nonzero(max_shock_rad)) - 2]
