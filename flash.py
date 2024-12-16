@@ -320,7 +320,7 @@ _VAR_LABELS = { \
     'velx':             r'$v$', \
     'vrad':             r'$v_\mathrm{rad}$', \
     'eexp':             r'$E_\mathrm{exp}$', \
-    'max_shock_radius': r'$r_\mathrm{sh}$', \str 
+    'max_shock_radius': r'$r_\mathrm{sh}$', \
     'shock_vel':        r'$v_\mathrm{sh}$', \
     'explosion_energy': r'$E_\mathrm{exp}$', \
     'point_mass':       r'$m_\mathrm{point}$', \
