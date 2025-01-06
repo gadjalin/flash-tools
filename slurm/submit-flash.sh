@@ -71,15 +71,15 @@ function init_logs {
 
     # --- We create hard links to the slurm log files so that the latter can be
     # deleted safely at the end of the script for cleanliness
-    # TODO Logs not deleted if job is cancelled with scancel?
-    if [[ -f "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%H%M).log" ]]; then
+    # TODO Slurm logs not deleted if job is cancelled with scancel?
+    if [[ -f "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%d%m%y-%H%M).log" ]]; then
         declare -i iter=1
-        while [[ -f "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%H%M)-${iter}.log" ]]; do
+        while [[ -f "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%d%m%y-%H%M)-${iter}.log" ]]; do
             iter+=1
         done
-        ln -f "flash-${SLURM_JOB_ID}.log" "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%H%M)-${iter}.log"
+        ln -f "flash-${SLURM_JOB_ID}.log" "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%d%m%y-%H%M)-${iter}.log"
     else
-        ln -f "flash-${SLURM_JOB_ID}.log" "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%H%M).log"
+        ln -f "flash-${SLURM_JOB_ID}.log" "logs/${SIM_NAME}-$(date --date="@${SLURM_JOB_START_TIME}" +%d%m%y-%H%M).log"
     fi
 }
 
