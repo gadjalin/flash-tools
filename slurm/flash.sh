@@ -17,7 +17,7 @@ SIM_PLT_NUMBER=0
 
 function print_help {
 cat << EOF
-Usage: sbatch flash.sh [OPTION]...
+Usage: ./flash.sh [OPTION]...
 Submit a FLASH job to slurm.
 
   -b, --bin=BINARY          Specify the path to the FLASH binary to execute.
