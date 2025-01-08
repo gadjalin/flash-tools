@@ -35,7 +35,7 @@ class dat(object):
 
 
     def column_names(self):
-        check_loaded()
+        self.check_loaded()
         return self.__runs[0].dtype.names
 
 
@@ -203,7 +203,7 @@ class model(object):
         Returns the name of the columns.
         """
 
-        check_loaded()
+        self.check_loaded()
         return self.__data.dtype.names
 
 
@@ -233,7 +233,7 @@ class model(object):
             If the index type is invalid.
         """
 
-        check_loaded()
+        self.check_loaded()
         if type(index) is int:
             return self.__data[self.__data.dtype.names[index]]
         elif type(index) is str:
