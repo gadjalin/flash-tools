@@ -154,7 +154,7 @@ function init_output_dir {
 }
 
 function init_autorestart {
-    # --- Get simulation intended output directory and basename
+    # --- Get existing checkpoints/plot files and basenames
     local CHK_FILES
     local SORTED_CHK_FILES
     local BASENAMES
@@ -174,6 +174,12 @@ function init_autorestart {
         # If no checkpoint file matches the basename from the parameter file, leave
         if [[ ! " ${BASENAMES[*]} " =~ [[:space:]]"$SIM_BASENM"[[:space:]] ]]; then
             $VERBOSE && echo "No existing simulation matching basename $SIM_BASENM found."
+
+            # Make sure restart = false in par file
+            sed -Ei "s/(restart\s*=\s*).*/\1.false./" "${PAR_FILE}"
+            sed -Ei "s/(checkpointFileNumber\s*=\s*).*/\10/" "$PAR_FILE"
+            sed -Ei "s/(plotFileNumber\s*=\s*).*/\10/" "$PAR_FILE"
+
             return 0
         fi
 
@@ -209,7 +215,7 @@ function init_autorestart {
         NEXT_PLT_FILE=""
         while read -r FILE; do
             if [[ "$FILE" =~ .*hdf5_plt_cnt.* ]] && [[ "$CHK_FILE_REACHED" = true ]]; then
-                NEXT_PLT_INDEX=$(($(sed -E "s/.*hdf5_plt_cnt_([0-9]*)$/\1/" <<< "$FILE") + 1))
+                NEXT_PLT_INDEX=$((10#$(sed -E "s/.*hdf5_plt_cnt_([0-9]*)$/\1/" <<< "$FILE") + 1))
                 NEXT_PLT_FILE="$FILE"
                 break
             elif [[ "$FILE" == $(basename "$LAST_CHK_FILE") ]]; then
@@ -218,8 +224,8 @@ function init_autorestart {
         done < <(ls -1t "$SIM_OUTPUT_DIR")
 
         $VERBOSE && echo "Auto-restart completed"
-        $VERBOSE && [ -n "$LAST_CHK_FILE" ] && echo -e "\t@ $LAST_CHK_FILE" || echo -e "\tNo valid checkpoint found"
-        $VERBOSE && [ -n "$NEXT_PLT_FILE" ] && echo -e "\t@ $NEXT_PLT_FILE" || echo -e "\tNo valid plot file found"
+        $VERBOSE && [ -n "$LAST_CHK_FILE" ] && echo -e "\t@ $LAST_CHK_FILE ($LAST_CHK_INDEX)" || echo -e "\tNo valid checkpoint found"
+        $VERBOSE && [ -n "$NEXT_PLT_FILE" ] && echo -e "\t@ $NEXT_PLT_FILE ($NEXT_PLT_INDEX)" || echo -e "\tNo valid plot file found"
 
         # Update relevant restart variables in the parameter file
         sed -Ei "s/(restart\s*=\s*).*/\1.true./" "${PAR_FILE}"
@@ -227,6 +233,11 @@ function init_autorestart {
         sed -Ei "s/(plotFileNumber\s*=\s*).*/\1${NEXT_PLT_INDEX}/" "$PAR_FILE"
     else
         $VERBOSE && echo "No existing simulation found."
+
+        # Make sure restart = false in par file
+        sed -Ei "s/(restart\s*=\s*).*/\1.false./" "${PAR_FILE}"
+        sed -Ei "s/(checkpointFileNumber\s*=\s*).*/\10/" "$PAR_FILE"
+        sed -Ei "s/(plotFileNumber\s*=\s*).*/\10/" "$PAR_FILE"
     fi
 }
 
