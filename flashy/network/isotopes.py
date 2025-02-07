@@ -36,7 +36,7 @@ _ELEMENTS = {
     "Moscovium": 115, "Livermorium": 116, "Tennessine": 117, "Oganesson": 118
 }
 
-def get_atomic_z(element: str) -> int:
+def get_charge(element: str) -> int:
     """
     Returns the atomic number of an element given its symbol or full name (case-insensitive).
 
@@ -64,7 +64,7 @@ def get_atomic_z(element: str) -> int:
     else:
         raise ValueError(f'Unrecognised element: {element}')
 
-def parse_isotope(isotope: str) -> tuple[int, int]:
+def parse_isotope_id(isotope: str) -> tuple[int, int]:
     """
     Return the atomic number and weight of the specified isotope.
 
@@ -92,7 +92,7 @@ def parse_isotope(isotope: str) -> tuple[int, int]:
     
     name = match[1]
     weight = match[2]
-    Z = get_z(name)
+    Z = get_charge(name)
     
     if isotope.lower() == 'h': #Hydrogen 1 may omit atomic weight
         return 1, 1
