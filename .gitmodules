@@ -1,0 +1,3 @@
+[submodule "flashy"]
+	path = flashy
+	url = https://github.com/gadjalin/flashy.git
