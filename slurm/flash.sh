@@ -192,7 +192,7 @@ function init_autorestart {
         # If only one chk file, try it, if more, compare with second to last for corruption
         #declare -i LAST_CHK_INDEX=$(ls -t "$SIM_OUTPUT_DIR" | grep "^${SIM_BASENM}hdf5_chk_[0-9]*$" | head -n1 | sed -E "s/^.*hdf5_chk_([0-9]*)/\1/")
         declare -i LAST_CHK_INDEX
-        LAST_CHK_INDEX=$(sed -E "s/.*chk_([0-9]*)$/\1/" <<< "${SORTED_CHK_FILES[-1]}")
+        LAST_CHK_INDEX=$((10#$(sed -E "s/.*chk_([0-9]*)$/\1/" <<< "${SORTED_CHK_FILES[-1]}")))
         LAST_CHK_FILE="${SORTED_CHK_FILES[-1]}"
         if [[ "${#CHK_FILES[@]}" -gt 1 ]]; then
             declare -i CHKSIZE_1
